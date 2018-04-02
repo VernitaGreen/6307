@@ -33,12 +33,21 @@ public class Client {
       Scanner in = new Scanner(socket.getInputStream());
       PrintWriter out = new PrintWriter(socket.getOutputStream());
       // Передаем обе матрицы на сервер
-      out.println(firstMatrix.toString());
-      out.println(secondMatrix.toString());
-      out.flush();
-      // Считываем матрицу сумму
-      Matrix thirdMatrix = Matrix.readMatrix(in);
-      Matrix.printMatrix(thirdMatrix, outputMatrixFile);
+      Matrix.printMatrix(firstMatrix, out);
+      Matrix.printMatrix(secondMatrix, out);
+      // Ждем пока пользователь нажмет клавишу
+      System.out.println("Нажмите Enter, чтобы продолжить");
+      System.in.read();
+      // Считываем матрицу сумму от сервера
+      try {
+        Matrix thirdMatrix = Matrix.readMatrix(in);
+        Matrix.printMatrix(thirdMatrix, outputMatrixFile);
+      } catch (Exception e) {
+        PrintWriter outToResult = new PrintWriter(outputMatrixFile);
+        outToResult.println("Невозможно выполнить действие");
+        outToResult.flush();
+        outToResult.close();
+      }
       // Убираемся после себя
       in.close();
       out.close();

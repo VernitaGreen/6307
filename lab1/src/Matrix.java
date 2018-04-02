@@ -191,9 +191,9 @@ public class Matrix implements Serializable {
    * @param in поток ввода, из которого происходит чтение матрицы.
    * @return матрица, которая находится в потоке ввода.
    */
-  public static Matrix readMatrix(Scanner in) {
+  public static Matrix readMatrix(Scanner in) throws NumberFormatException {
     // Создание нового объекта
-    int rowCount = in.nextInt();
+    int rowCount = Integer.parseInt(in.next());
     int columnCount = in.nextInt();
     double[][] matrix = new double[rowCount][columnCount];
     // Считывание матрицы из заданного файла, запись в новый объект
@@ -202,8 +202,6 @@ public class Matrix implements Serializable {
         matrix[row][column] = in.nextDouble();
       }
     }
-    // Закрытие потока ввода
-    in.close();
     return new Matrix(matrix);
   }
 
@@ -236,8 +234,7 @@ public class Matrix implements Serializable {
       }
       out.println();
     }
-    // Закрытие потока вывода
-    out.close();
+    out.flush();
   }
 
   /**

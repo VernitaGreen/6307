@@ -12,6 +12,7 @@ public class MonoServer implements Runnable {
 
   /**
    * Создает моно-сервер по сокету клиента.
+   *
    * @param client сокет клиента
    */
   MonoServer(Socket client) {
@@ -28,13 +29,16 @@ public class MonoServer implements Runnable {
       Scanner in = new Scanner(client.getInputStream());
       PrintWriter out = new PrintWriter(client.getOutputStream());
       // Считываем наши матрицы, складываем их, записываем результат в выходной поток для клиента
-      Matrix.printMatrix(Matrix.sum(Matrix.readMatrix(in), Matrix.readMatrix(in)), out);
-      out.flush();
+      try {
+        Matrix.printMatrix(Matrix.sum(Matrix.readMatrix(in), Matrix.readMatrix(in)), out);
+      } catch (Exception e) {
+        out.println(":(");
+      }
       // Убираемся после себя
       in.close();
       out.close();
       client.close();
-    } catch (IOException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
